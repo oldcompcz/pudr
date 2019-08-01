@@ -1,6 +1,9 @@
+# -*- coding: utf-8 -*-
+
 """Script to generate codes used for decoding and displaying Czech
    characters by the `decode_and_write` Pascal procedure.
 """
+
 import unicodedata
 
 
