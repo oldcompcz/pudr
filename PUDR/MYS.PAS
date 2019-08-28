@@ -12,9 +12,7 @@ var R: Registers;
     R.AX := 8;     {min. & max. vertical position}
     R.CX := 0;
     R.DX := 190;
-    Intr($33, R);
-
-    mouse_cursor := file_to_ptr('IMG\RUKA.IMG') end;
+    Intr($33, R) end;
 
 
 procedure get_mouse_state;
@@ -33,12 +31,12 @@ procedure show_mouse;
 
     begin mx := mouse.x;
     my := mouse.y;
-    PutImage(mx, my, mouse_cursor^, XORPut) end;
+    PutImage(mx, my, @RUKA^, XORPut) end;
 
 
 procedure hide_mouse;
 
-    begin PutImage(mx, my, mouse_cursor^, XORPut) end;
+    begin PutImage(mx, my, @RUKA^, XORPut) end;
 
 
 procedure wait_for_release;
