@@ -4,6 +4,8 @@
 
 import logging
 
+import data
+
 
 def translation_table():
     """Return a translation table combining two mappings:
@@ -47,35 +49,35 @@ def main():
     logging.basicConfig(level=logging.WARN, format='%(message)s')
 
     trans_table = translation_table()
+    max_len = 128 - 4 - 3
 
-    for filename in ('TEXTY.TXT', 'VECI.TXT'):
+    with open('/home/michal/dos/PUDR/PUDR/DATA.PAS', mode='w',
+              encoding='latin1', newline='\r\n') as f:
 
-        with open('UTF8_{}'.format(filename), mode='r',
-                  encoding='utf-8') as input_file,                            \
-             open('/home/michal/dos/PUDR/PUDR/{}'.format(filename), mode='w',
-                  encoding='latin-1', newline='\r\n') as output_file:
 
-            item_lines = []
+        for section in data.texts:
+            section_name = next(iter(section))
+            section_texts = section[section_name]
 
-            for input_line in input_file:
+            print('{}: array[0..{}] of string[{}] = ('
+                  .format(section_name, len(section_texts) - 1,
+                          max(len(t) for t in section_texts)),
+                  file=f)
 
-                if not input_line.startswith(('!', '~')):
-                    # normal line - part of current text item
-                    item_lines.extend(wrap_to_27(input_line.rstrip()))
+            output = []
 
+            for item in section_texts:
+                if isinstance(item, list):
+                    output_line = ''.join(chr(n + 48) for n in item)
                 else:
-                    # special line - end of current text item
-                    if item_lines:
-                        print(*item_lines, '-' * 27, sep='\n')
+                    wrapped = list(wrap_to_27(item))
+                    output_line = '_'.join(wrapped).translate(trans_table)
 
-                        output = '_'.join(item_lines)
-                        output_file.write(output.translate(trans_table) + '\n')
+                output.append('    \'{}\''.format(output_line))
 
-                        item_lines = []
+            print(',\n'.join(output), file=f)
+            print('\n);\n', file=f)
 
-                    if input_line.startswith('~'):
-                        # line not to be encoded
-                        output_file.write(input_line[1:])
 
 
 if __name__ == '__main__':
