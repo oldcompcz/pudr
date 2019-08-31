@@ -78,6 +78,26 @@ def main():
             print(',\n'.join(output), file=f)
             print('\n);\n', file=f)
 
+        thing_count = len(data.things) - 1
+        print('things: array[0..{}] of thing = ('.format(thing_count), file=f)
+
+        output = []
+
+        for thing in data.things:
+            name = thing['name'].translate(trans_table)
+
+            img_name = thing['image'][:8]
+
+            wrapped = list(wrap_to_27(thing['description']))
+            desc = '_'.join(wrapped).translate(trans_table)
+
+            output.append('  (name: \'{}\'; where: {}; portable: {}; slot: {};\n   desc: \'{}\';\n   image: @{})'
+                          .format(name, thing['where'], thing['portable'], thing['slot'], desc, img_name))
+
+        print(',\n\n'.join(output), file=f)
+        print('\n);\n', file=f)
+        print('thing_count: Byte = {};'.format(thing_count), file=f)
+
 
 
 if __name__ == '__main__':
