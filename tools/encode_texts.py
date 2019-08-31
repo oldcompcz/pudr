@@ -2,6 +2,8 @@
 
 """Script to encode all texts in the game."""
 
+import logging
+
 
 def translation_table():
     """Return a translation table combining two mappings:
@@ -17,22 +19,33 @@ def translation_table():
     return str.maketrans(translation_dict)
 
 
-def wrap_to_27(text):
-    """Wrap input text to the width of 27 characters."""
+def wrap_to_27(item):
+    """Wrap input item to the width of 27 characters."""
 
-    while len(text) > 27 and ' ' in text:
+    if '_' in item:
+        for line in item.split('_'):
+            yield line
+        return
 
-        split_position = text[:28].rfind(' ')
+    while len(item) > 27 and ' ' in item:
 
-        line = text[:split_position]
-        text = text[split_position + 1:]
+        split_position = item[:28].rfind(' ')
+
+        if item[:split_position].endswith((' k', ' s', ' v', ' z')):
+            split_position -= 2
+
+        line = item[:split_position]
+        item = item[split_position + 1:]
 
         yield line.strip()
 
-    yield text.strip()
+    yield item.strip()
 
 
 def main():
+    # logging.basicConfig(level=logging.DEBUG, format='%(message)s')
+    logging.basicConfig(level=logging.WARN, format='%(message)s')
+
     trans_table = translation_table()
 
     for filename in ('TEXTY.TXT', 'VECI.TXT'):
