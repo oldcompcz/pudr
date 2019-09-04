@@ -10,8 +10,8 @@ import data
 def translation_table():
     """Return a translation table combining two mappings:
 
-    - Czech letters with diacritics mapped to chars '\xc0'..'\xdd'
-    - ascii chars '\x20'..'\x7d' mapped to their value XORed by 1
+       - Czech letters with diacritics mapped to chars '\xc0'..'\xdd'
+       - ascii chars '\x20'..'\x7d' mapped to their value XORed by 1
     """
     translation_dict = dict(zip('ÁČĎÉĚÍŇÓŘŠŤÚŮÝŽáčďéěíňóřšťúůýž',
                             map(chr, range(0xc0, 0xde))))
@@ -80,7 +80,7 @@ def main():
                     output_line = '_'.join(wrapped).translate(trans_table)
 
                 if len(output_line) > max_len:
-                    # divide to fit in TP IDE's max line length 128
+                    # divide to fit in Turbo Pascal IDE's max line length 128
                     output_line = output_line[:max_len] + '\'\n    + \'' + output_line[max_len:]
                     # because of this, can't use {!r} on the following line
 
@@ -106,8 +106,10 @@ def main():
                 logging.warning('TOO MANY LINES:\n{}'.format('\n'.join(wrapped)))
             desc = '_'.join(wrapped).translate(trans_table)
 
-            output.append('  (name: \'{}\'; where: {}; portable: {}; slot: {};\n   desc: \'{}\';\n   image: @{})'
-                          .format(name, thing['where'], thing['portable'], thing['slot'], desc, img_name))
+            output.append('  (name: \'{}\'; where: {}; portable: {}; slot: {};'
+                          '\n   desc: \'{}\';\n   image: @{})'
+                          .format(name, thing['where'], thing['portable'],
+                                  thing['slot'], desc, img_name))
 
         print(',\n\n'.join(output), file=f)
         print('\n);\n', file=f)
