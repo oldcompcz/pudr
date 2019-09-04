@@ -111,26 +111,32 @@ def main():
 
         print(',\n\n'.join(output), file=f)
         print('\n);\n', file=f)
-        print('thing_count: Byte = {};'.format(thing_count), file=f)
+        print('thing_count: Byte = {};\n'.format(thing_count), file=f)
 
-        # report stats to stdout
+        # report length stats
         max_exit_len = max(len(item) for item in data.texts['exit_names'])
         max_exit_len_items = [strip_diacritics(item)
                               for item in data.texts['exit_names']
                               if len(item) == max_exit_len]
-        print('max. exit name length:', max_exit_len, max_exit_len_items, '', sep='\n')
+        print('{{\nmax. exit name length: {}\n{}\n'
+              .format(max_exit_len, max_exit_len_items),
+              file=f)
 
         max_name_len = max(len(item['name']) for item in data.things)
         max_name_len_items = [strip_diacritics(item['name'])
                               for item in data.things
                               if len(item['name']) == max_name_len]
-        print('max. thing name length:', max_name_len, max_name_len_items, '', sep='\n')
+        print('max. thing name length: {}\n{}\n'
+              .format(max_name_len, max_name_len_items),
+              file=f)
 
         max_desc_len = max(len(item['description']) for item in data.things)
         max_desc_len_items = [strip_diacritics(item['description'])
                               for item in data.things
                               if len(item['description']) == max_desc_len]
-        print('max. thing description length:', max_desc_len, max_desc_len_items, '', sep='\n')
+        print('max. thing description length: {}\n{}\n}}'
+              .format(max_desc_len, max_desc_len_items),
+              file=f)
 
 
 if __name__ == '__main__':
