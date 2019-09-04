@@ -21,17 +21,17 @@ def translation_table():
     return str.maketrans(translation_dict)
 
 
-def wrap_to_27(item):
-    """Wrap input item to the width of 27 characters."""
+def wrap_text(item, width=27):
+    """Wrap input item to the width of `width` characters."""
 
     if '_' in item:
         for line in item.split('_'):
             yield line
         return
 
-    while len(item) > 27 and ' ' in item:
+    while len(item) > width and ' ' in item:
 
-        split_position = item[:28].rfind(' ')
+        split_position = item[:width + 1].rfind(' ')
 
         if item[:split_position].endswith((' k', ' s', ' v', ' z')):
             split_position -= 2
@@ -72,7 +72,7 @@ def main():
                 if isinstance(item, list):
                     output_line = ''.join(chr(n + 48) for n in item)
                 else:
-                    wrapped = list(wrap_to_27(item))
+                    wrapped = list(wrap_text(item))
                     logging.debug('{}\n{}'.format('\n'.join(wrapped), '-'*27))
                     if len(wrapped) > 6 or (section_name == 'texts_other' and len(wrapped) > 4):
                         logging.warning('TOO MANY LINES:\n{}'
@@ -100,7 +100,7 @@ def main():
 
             img_name = thing['image'][:8]
 
-            wrapped = list(wrap_to_27(thing['description']))
+            wrapped = list(wrap_text(thing['description']))
             logging.debug('{}\n{}'.format('\n'.join(wrapped), '-' * 27))
             if len(wrapped) > 4:
                 logging.warning('TOO MANY LINES:\n{}'.format('\n'.join(wrapped)))
