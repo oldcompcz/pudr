@@ -4,6 +4,7 @@
    characters by the `decode_and_write` Pascal procedure.
 """
 
+import logging
 import unicodedata
 
 
@@ -22,7 +23,7 @@ def code_pairs(char_sequence):
             letter = unicode_info[1]
             diacritic = unicode_info[2]
 
-        print('{}: {} with {} ---> '.format(char, letter, diacritic), end='')
+        logging.debug('{}: {} with {} ---> '.format(char, letter, diacritic))
 
         letter_code = 1 + 'ACDEINORSTUYZacdeinorstuyz'.index(letter)
 
@@ -42,12 +43,14 @@ def combine_from_pair(bit_765, bit_43210):
     """
 
     code = (bit_765 << 5) + bit_43210
-    print('{:3b} {:5b} ---> {:#x}'.format(bit_765, bit_43210, code))
+    logging.debug('{:3b} {:5b} ---> {:#x}'.format(bit_765, bit_43210, code))
 
     return code
 
 
 def main():
+    logging.basicConfig(level=logging.DEBUG, format='%(message)s')
+
     czech_chars = 'ÁČĎÉĚÍŇÓŘŠŤÚŮÝŽáčďéěíňóřšťúůýž'
 
     codes = (combine_from_pair(diacritic, letter)
