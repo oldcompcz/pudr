@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import logging
 import re
 import unicodedata
 
@@ -74,3 +75,47 @@ def strip_diacritics_2(input_string: str) -> str:
 
     trans_table = str.maketrans(trans_dict)
     return input_string.translate(trans_table)
+
+
+def code_pairs(char_sequence):
+    """Generate tuples containing diacritics & letter codes for each
+       char in `char_sequence`.
+    """
+    for char in char_sequence:
+
+        unicode_info = [unicodedata.name(char).split()[i] for i in (1, 3, 5)]
+
+        if unicode_info[0] == 'SMALL':
+            letter = unicode_info[1].lower()
+            diacritic = unicode_info[2].lower()
+        else:
+            letter = unicode_info[1]
+            diacritic = unicode_info[2]
+
+        logging.debug('{}: {} with {} ---> '.format(char, letter, diacritic))
+
+        letter_code = 1 + 'ACDEINORSTUYZacdeinorstuyz'.index(letter)
+
+        if char == 'ď':
+            # special case
+            diacritic_code = 6
+        else:
+            diacritic_code = ['ACUTE', 'CARON', 'RING',
+                              'acute', 'caron', 'ring'].index(diacritic)
+
+        yield diacritic_code, letter_code
+
+
+def combine_from_pair(bit_765, bit_43210):
+    """Store diacritics code (values 0-6) & letter code (values 1-26)
+       in one byte-sized code.
+    """
+
+    code = (bit_765 << 5) + bit_43210
+    logging.debug('{:3b} {:5b} ---> {:#x}'.format(bit_765, bit_43210, code))
+
+    return code
+
+
+if __name__ == '__main__':
+    logging.basicConfig(level=logging.DEBUG, format='%(message)s')
