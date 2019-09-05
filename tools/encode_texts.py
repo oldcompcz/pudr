@@ -5,51 +5,14 @@
 import logging
 
 import data
-from utils import strip_diacritics
-
-
-def translation_table():
-    """Return a translation table combining two mappings:
-
-       - Czech letters with diacritics mapped to chars '\xc0'..'\xdd'
-       - ascii chars '\x20'..'\x7d' mapped to their value XORed by 1
-    """
-    translation_dict = dict(zip('ÁČĎÉĚÍŇÓŘŠŤÚŮÝŽáčďéěíňóřšťúůýž',
-                            map(chr, range(0xc0, 0xde))))
-
-    translation_dict.update({chr(n): chr(n ^ 1) for n in range(0x20, 0x7e)})
-
-    return str.maketrans(translation_dict)
-
-
-def wrap_text(item, width=27):
-    """Wrap input item to the width of `width` characters."""
-
-    if '_' in item:
-        for line in item.split('_'):
-            yield line
-        return
-
-    while len(item) > width and ' ' in item:
-
-        split_position = item[:width + 1].rfind(' ')
-
-        if item[:split_position].endswith((' k', ' s', ' v', ' z')):
-            split_position -= 2
-
-        line = item[:split_position]
-        item = item[split_position + 1:]
-
-        yield line.strip()
-
-    yield item.strip()
+import utils
 
 
 def main():
     # logging.basicConfig(level=logging.DEBUG, format='%(message)s')
     logging.basicConfig(level=logging.WARN, format='%(message)s')
 
-    trans_table = translation_table()
+    trans_table = utils.translation_table()
     max_len = 128 - 4 - 3
 
     with open('/home/michal/dos/PUDR/PUDR/DATA.PAS', mode='w',
@@ -70,7 +33,7 @@ def main():
                 if isinstance(item, list):
                     output_line = ''.join(chr(n + 48) for n in item)
                 else:
-                    wrapped = list(wrap_text(item))
+                    wrapped = list(utils.wrap_text(item))
                     logging.debug('{}\n{}'.format('\n'.join(wrapped), '-'*27))
                     if len(wrapped) > 6 or (section_name == 'texts_other' and len(wrapped) > 4):
                         logging.warning('TOO MANY LINES:\n{}'
@@ -98,7 +61,7 @@ def main():
 
             img_name = thing['image'][:8]
 
-            wrapped = list(wrap_text(thing['description']))
+            wrapped = list(utils.wrap_text(thing['description']))
             logging.debug('{}\n{}'.format('\n'.join(wrapped), '-' * 27))
             if len(wrapped) > 4:
                 logging.warning('TOO MANY LINES:\n{}'.format('\n'.join(wrapped)))
@@ -115,7 +78,7 @@ def main():
 
         # report length stats
         max_exit_len = max(len(item) for item in data.texts['exit_names'])
-        max_exit_len_items = [strip_diacritics(item)
+        max_exit_len_items = [utils.strip_diacritics(item)
                               for item in data.texts['exit_names']
                               if len(item) == max_exit_len]
         print('{{\nmax. exit name length: {}\n{}\n'
@@ -123,7 +86,7 @@ def main():
               file=f)
 
         max_name_len = max(len(item['name']) for item in data.things)
-        max_name_len_items = [strip_diacritics(item['name'])
+        max_name_len_items = [utils.strip_diacritics(item['name'])
                               for item in data.things
                               if len(item['name']) == max_name_len]
         print('max. thing name length: {}\n{}\n'
@@ -131,7 +94,7 @@ def main():
               file=f)
 
         max_desc_len = max(len(item['description']) for item in data.things)
-        max_desc_len_items = [strip_diacritics(item['description'])
+        max_desc_len_items = [utils.strip_diacritics(item['description'])
                               for item in data.things
                               if len(item['description']) == max_desc_len]
         print('max. thing description length: {}\n{}\n}}'
