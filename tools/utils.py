@@ -171,8 +171,6 @@ def code_pairs(char_sequence):
             letter = unicode_info[1]
             diacritic = unicode_info[2]
 
-        logging.debug('{}: {} with {} ---> '.format(char, letter, diacritic))
-
         letter_code = 1 + 'ACDEINORSTUYZacdeinorstuyz'.index(letter)
 
         if char == 'ď':
@@ -189,12 +187,5 @@ def combine_from_pair(bit_765, bit_43210):
     """Store diacritics code (values 0-6) & letter code (values 1-26)
        in one byte-sized code.
     """
-
     code = (bit_765 << 5) + bit_43210
-    logging.debug('{:3b} {:5b} ---> {:#x}'.format(bit_765, bit_43210, code))
-
     return code
-
-
-if __name__ == '__main__':
-    logging.basicConfig(level=logging.DEBUG, format='%(message)s')
