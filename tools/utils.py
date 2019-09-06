@@ -1,8 +1,87 @@
 # -*- coding: utf-8 -*-
 
-import logging
+from itertools import zip_longest
 import re
 import unicodedata
+
+from PIL import Image
+
+
+class CutReader:
+    """A class to read image data from a .CUT file."""
+
+    def __init__(self, file_path):
+        self.width = 0
+        self.height = 0
+
+        with open(file_path, 'rb') as f:
+            self.rows = tuple(self.decode_cut(f))
+
+    def decode_cut(self, stream):
+        """Generate raw image data from a .CUT file as a sequence of rows,
+           where each row is a byte array of pixel values.
+        """
+        self.width = int.from_bytes(stream.read(2), 'little')
+        self.height = int.from_bytes(stream.read(2), 'little')
+        print('{}: {} x {} px'.format(stream.name, self.width, self.height))
+
+        stream.read(2)    # reserved/unused
+
+        for __ in range(self.height):
+            row = bytearray()
+
+            row_size = int.from_bytes(stream.read(2), 'little')
+            row_start = stream.tell()
+
+            while stream.tell() - row_start < row_size - 1:
+                count = stream.read(1)[0]
+
+                if count & 0x80:
+                    count = count & 0x7f
+                    value = stream.read(1)[0]
+                    # `count` times repeating `value`
+                    row.extend(value for __ in range(count))
+                else:
+                    # `count` literal values
+                    row.extend(stream.read(1)[0] for __ in range(count))
+
+            assert stream.read(1) == b'\x00'    # null-byte - end of row
+
+            assert len(row) == self.width
+            yield row
+
+    def data_for_img(self):
+        squashed_data = bytearray()
+
+        for row in self.rows:
+            # if image width is not multiple of 4, row data will be
+            # padded with zeros
+            for a, b, c, d in zip_longest(*[iter(row)] * 4, fillvalue=0):
+                squashed_data.append((a << 6) + (b << 4) + (c << 2) + d)
+
+        adjusted_width = (self.width - 1).to_bytes(2, 'little')
+        adjusted_height = (self.height - 1).to_bytes(2, 'little')
+
+        return adjusted_width + adjusted_height + squashed_data
+
+    def write_img(self, path):
+        with open(path, 'wb') as f:
+            f.write(self.data_for_img())
+
+    def data_for_png(self):
+        return b''.join(self.rows)
+
+    def write_png(self, path, zoom=4):
+        # flatten self.rows & convert to bytes at the same time
+
+        img = Image.new('P', (self.width, self.height))
+        img.putpalette([0, 0, 0,            # 0 black
+                        0, 0xaa, 0xaa,      # 1 cyan
+                        0xaa, 0, 0xaa,      # 2 magenta
+                        0xaa, 0xaa, 0xaa])  # 3 white
+        img.frombytes(self.data_for_png())
+        img = img.resize((self.width * zoom, self.height * zoom))
+        img.save(path)
 
 
 def translation_table():
