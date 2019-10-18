@@ -77,24 +77,24 @@ def main():
         print(f'thing_count: Byte = {thing_count};\n', file=f)
 
         # report length stats
-        max_exit_len = max(len(item) for item in data.texts['exit_names'])
-        max_exit_len_items = [utils.strip_diacritics(item)
-                              for item in data.texts['exit_names']
-                              if len(item) == max_exit_len]
+        # max_exit_len = max(len(item) for item in data.texts['exit_names'])
+        # max_exit_len_items = [utils.strip_diacritics(item)
+        #                       for item in data.texts['exit_names']
+        #                       if len(item) == max_exit_len]
         # print(f'{{\nmax. exit name length: {max_exit_len}\n'
         #       f'{max_exit_len_items}\n', file=f)
 
-        max_name_len = max(len(item['name']) for item in data.things)
-        max_name_len_items = [utils.strip_diacritics(item['name'])
-                              for item in data.things
-                              if len(item['name']) == max_name_len]
+        # max_name_len = max(len(item['name']) for item in data.things)
+        # max_name_len_items = [utils.strip_diacritics(item['name'])
+        #                       for item in data.things
+        #                       if len(item['name']) == max_name_len]
         # print(f'max. thing name length: {max_name_len}\n'
         #       f'{max_name_len_items}\n', file=f)
 
-        max_desc_len = max(len(item['description']) for item in data.things)
-        max_desc_len_items = [utils.strip_diacritics(item['description'])
-                              for item in data.things
-                              if len(item['description']) == max_desc_len]
+        # max_desc_len = max(len(item['description']) for item in data.things)
+        # max_desc_len_items = [utils.strip_diacritics(item['description'])
+        #                       for item in data.things
+        #                       if len(item['description']) == max_desc_len]
         # print(f'max. thing description length: {max_desc_len}\n'
         #       f'{max_desc_len_items}\n}}', file=f)
 
