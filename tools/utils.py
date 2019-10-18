@@ -129,8 +129,9 @@ def strip_diacritics(input_string: str) -> str:
         if ord(char) < 0x80:
             continue
 
-        match_letter = re.match(r'LATIN (?P<case>CAPITAL|SMALL) LETTER (?P<letter>\w)',
-                                unicodedata.name(char))
+        match_letter = re.match(
+            r'LATIN (?P<case>CAPITAL|SMALL) LETTER (?P<letter>\w)',
+            unicodedata.name(char))
 
         if match_letter:
             trans_dict[char] = (match_letter.groupdict()['letter'].lower()

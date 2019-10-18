@@ -34,7 +34,8 @@ def main():
                 else:
                     wrapped = list(utils.wrap_text(item))
                     logging.debug('{}\n{}'.format('\n'.join(wrapped), '-'*27))
-                    if len(wrapped) > 6 or (section_name == 'texts_other' and len(wrapped) > 4):
+                    if len(wrapped) > 6 or (section_name == 'texts_other'
+                                            and len(wrapped) > 4):
                         logging.warning('TOO MANY LINES:\n{}'
                                         .format('\n'.join(wrapped)))
                     output_line = '_'.join(wrapped).translate(trans_table)
@@ -64,7 +65,8 @@ def main():
             wrapped = list(utils.wrap_text(thing['description']))
             logging.debug('{}\n{}'.format('\n'.join(wrapped), '-' * 27))
             if len(wrapped) > 4:
-                logging.warning('TOO MANY LINES:\n{}'.format('\n'.join(wrapped)))
+                logging.warning('TOO MANY LINES:\n{}'
+                                .format('\n'.join(wrapped)))
             desc = '_'.join(wrapped).translate(trans_table)
 
             output.append(f"  (name: '{name}'; where: {thing['where']};"
