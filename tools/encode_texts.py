@@ -81,25 +81,22 @@ def main():
         max_exit_len_items = [utils.strip_diacritics(item)
                               for item in data.texts['exit_names']
                               if len(item) == max_exit_len]
-        print('{{\nmax. exit name length: {}\n{}\n'
-              .format(max_exit_len, max_exit_len_items),
-              file=f)
+        # print(f'{{\nmax. exit name length: {max_exit_len}\n'
+        #       f'{max_exit_len_items}\n', file=f)
 
         max_name_len = max(len(item['name']) for item in data.things)
         max_name_len_items = [utils.strip_diacritics(item['name'])
                               for item in data.things
                               if len(item['name']) == max_name_len]
-        print('max. thing name length: {}\n{}\n'
-              .format(max_name_len, max_name_len_items),
-              file=f)
+        # print(f'max. thing name length: {max_name_len}\n'
+        #       f'{max_name_len_items}\n', file=f)
 
         max_desc_len = max(len(item['description']) for item in data.things)
         max_desc_len_items = [utils.strip_diacritics(item['description'])
                               for item in data.things
                               if len(item['description']) == max_desc_len]
-        print('max. thing description length: {}\n{}\n}}'
-              .format(max_desc_len, max_desc_len_items),
-              file=f)
+        # print(f'max. thing description length: {max_desc_len}\n'
+        #       f'{max_desc_len_items}\n}}', file=f)
 
 
 if __name__ == '__main__':
