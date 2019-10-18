@@ -68,18 +68,16 @@ class CutReader:
         with open(path, 'wb') as f:
             f.write(self.data_for_img())
 
-    def data_for_png(self):
-        return b''.join(self.rows)
-
     def write_png(self, path, zoom=4):
-        # flatten self.rows & convert to bytes at the same time
-
         img = Image.new('P', (self.width, self.height))
         img.putpalette([0, 0, 0,            # 0 black
                         0, 0xaa, 0xaa,      # 1 cyan
                         0xaa, 0, 0xaa,      # 2 magenta
                         0xaa, 0xaa, 0xaa])  # 3 white
-        img.frombytes(self.data_for_png())
+
+        # flatten self.rows & convert to bytes at the same time
+        data_as_bytes = b''.join(self.rows)
+        img.frombytes(data_as_bytes)
         img = img.resize((self.width * zoom, self.height * zoom))
         img.save(path)
 
