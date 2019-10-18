@@ -22,9 +22,8 @@ def main():
 
         # generate texts
         for section_name, section_texts in data.texts.items():
-            print('{}: array[0..{}] of string[{}] = ('
-                  .format(section_name, len(section_texts) - 1,
-                          max(len(t) for t in section_texts)),
+            print(f'{section_name}: array[0..{len(section_texts) - 1}]'
+                  f' of string[{max(len(t) for t in section_texts)}] = (',
                   file=f)
 
             output = []
@@ -42,17 +41,18 @@ def main():
 
                 if len(output_line) > max_len:
                     # divide to fit in Turbo Pascal IDE's max line length 128
-                    output_line = output_line[:max_len] + '\'\n    + \'' + output_line[max_len:]
+                    output_line = f"{output_line[:max_len]}'\n" \
+                                  f"    + '{output_line[max_len:]}"
                     # because of this, can't use {!r} on the following line
 
-                output.append('    \'{}\''.format(output_line))
+                output.append(f'    \'{output_line}\'')
 
             print(',\n'.join(output), file=f)
             print('\n);\n', file=f)
 
         # generate things
         thing_count = len(data.things) - 1
-        print('things: array[0..{}] of thing = ('.format(thing_count), file=f)
+        print(f'things: array[0..{thing_count}] of thing = (', file=f)
 
         output = []
 
@@ -67,14 +67,14 @@ def main():
                 logging.warning('TOO MANY LINES:\n{}'.format('\n'.join(wrapped)))
             desc = '_'.join(wrapped).translate(trans_table)
 
-            output.append('  (name: \'{}\'; where: {}; portable: {}; slot: {};'
-                          '\n   desc: \'{}\';\n   image: @{})'
-                          .format(name, thing['where'], thing['portable'],
-                                  thing['slot'], desc, img_name))
+            output.append(f"  (name: '{name}'; where: {thing['where']};"
+                          f" portable: {thing['portable']};"
+                          f" slot: {thing['slot']};"
+                          f"\n   desc: '{desc}';\n   image: @{img_name})")
 
         print(',\n\n'.join(output), file=f)
         print('\n);\n', file=f)
-        print('thing_count: Byte = {};\n'.format(thing_count), file=f)
+        print(f'thing_count: Byte = {thing_count};\n', file=f)
 
         # report length stats
         max_exit_len = max(len(item) for item in data.texts['exit_names'])
