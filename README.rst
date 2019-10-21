@@ -1,6 +1,8 @@
 .. image:: titul.png
 
-Původní česká textová adventura pro PC XT, DOS, CGA a myš. Příspěvek do soutěže `Tvorba hry pro DOS`_.
+Původní česká textová adventura pro PC XT, DOS, CGA a myš.
+
+Účastník a vítěz soutěže `Tvorba hry pro DOS`_.
 
 .. image:: hra_paleta1.png
 
