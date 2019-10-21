@@ -35,7 +35,6 @@ const {main commands foreground colors}
       cga_palette: Byte = 1;
       cmd_start: PCommand = nil;
       room: Byte = 0;
-      inventory: array[0..5] of Shortint = (-1, -1, -1, -1, -1, -1);
       openables: set of Byte = [0, 1, 2, 25];
 
 {$I DATA.PAS}
@@ -49,6 +48,7 @@ var mx, my, x_pos: Integer;
     cmd: PCommand;
     P: Pointer;
     main_commands: array[1..5] of PCommand;
+    inventory: array[0..10] of Shortint;
 
 {$I MYS.PAS}
 {$I PREDMETY.PAS}
@@ -61,6 +61,9 @@ RegisterBGIdriver(@CGADriver);
 InitGraph(graph_driver, graph_mode, '');
 SetBkColor(0);
 init_mouse;
+
+for i := 0 to 10 do
+    inventory[i] := -1;
 
 {title & intro}
 for i := 0 to 6 do begin
