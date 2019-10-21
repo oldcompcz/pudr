@@ -100,7 +100,6 @@ var i, inv_slot: Byte;
             {things in room}
             if (things[i].where = room) then
                 if ((action <> 2) or things[i].portable)           {only portable things can be taken}
-                        and ((action <> 2) or not inventory_full)  {& can be taken if inventory not full}
                         and (action <> 3)                          {& only owned things can be used}
                         and ((action <> 4) or (i in openables))    {& only some things make sense to open}
                         then

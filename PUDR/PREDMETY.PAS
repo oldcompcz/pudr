@@ -26,17 +26,6 @@ var i: Byte;
     PutImage(41 + 40*i - 220*Ord(i>5), 128, things[thing_id].image^, XORPut) end;
 
 
-function inventory_full: Boolean;
-var i: Byte;
-
-    begin inventory_full := True;
-
-    for i := 0 to 10 do
-        if inventory[i] = -1 then begin
-            inventory_full := False;
-            Break end end;
-
-
 procedure things_in_room;
 var thing_id: Byte;
 
