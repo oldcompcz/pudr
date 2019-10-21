@@ -118,6 +118,8 @@ var i, inv_slot: Byte;
                         Inc(inv_slot);
                     add_command(41 + 40*inv_slot - 220*Ord(inv_slot>5), 128,
                                 0, 0, 'image', things[i].name, -1, i, i) end
+                else begin {dangling else} end
+            else begin {dangling else} end
 
     else if type_of = 'exits' then begin
         {x_pos is global, shared with add_command}
