@@ -16,7 +16,7 @@ texts = {
         # 1
         'pro soutěž__"Tvorba hry pro DOS"__#hvdosdev2019_www.high-voltage.cz',
         # 2
-        'verze 1.0__30.8.2019',
+        'verze 1.1__21.10.2019',
         # 3
         'Probudila tě nesnesitelná zima a iritující zvuk kapek pravidelně'
         ' dopadajících na lesklé dlaždice.',

@@ -13,7 +13,7 @@ command_names: array[0..5] of string[7] = (
 texts_intro: array[0..5] of string[106] = (
     ')b(!6u6!Rutehnr^)b(!lxslhb`!i`chmhr^^fhuitc/bnl.nmebnlqb{.qtes',
     'qsn!rntu”›^^#Uwnsc`!isx!qsn!ENR#^^"iwenredw3108^vvv/ihfi,wnmu`fd/b{',
-    'wds{d!0/1^^21/9/3108',
+    'wds{d!0/0^^30/01/3108',
     'Qsnctehm`!u”!odrodrhudmoœ^{hl`!`!hshutk‘b‘!{wtj!j`qdj^qs`whedmo”!enq`e`k‘b‘bi!o`^mdrjm“!em`›ehbd/',
     'Md›‘ÿ!w!lœsohbh!wd!{qnm`^wxrtotu“l!bim`ehb‘l!ÿtqm‘jt^o`!lsuwnmx/',
     'Usœq‘!u”!cnmdru!im`wx!`^odcm`i‹!qnbhu-!›d!odrbiœ{‘^lonin-!`cx!rdr!ru`m!kdeont^{d!{ed!trjm`eo”o‹bi^qnmn›dj/'
