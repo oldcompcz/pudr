@@ -35,7 +35,7 @@ const {main commands foreground colors}
       cga_palette: Byte = 1;
       cmd_start: PCommand = nil;
       room: Byte = 0;
-      inventory: array[0..5] of Shortint = (-1, -1, -1, -1, -1, -1);
+      inventory: array[0..10] of Shortint = (-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1);
       openables: set of Byte = [0, 1, 2, 25];
 
 {$I DATA.PAS}
