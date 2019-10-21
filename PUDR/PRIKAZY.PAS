@@ -94,7 +94,7 @@ var i, inv_slot: Byte;
     begin
     clear_clickables;
 
-    if type_of = 'things' then begin
+    if type_of = 'things' then
 
         for i := 0 to thing_count do
             {things in room}
@@ -117,7 +117,7 @@ var i, inv_slot: Byte;
                     while inventory[inv_slot] <> i do
                         Inc(inv_slot);
                     add_command(41 + 40*inv_slot, 128,
-                                0, 0, 'image', things[i].name, -1, i, i) end end
+                                0, 0, 'image', things[i].name, -1, i, i) end
 
     else if type_of = 'exits' then begin
         {x_pos is global, shared with add_command}
